@@ -28,7 +28,7 @@ const NavLinks = ({isMobileNav = false}: NavLinksProps) => {
                     <Link
                         href={item.route === '/profile' ? profileLink : item.route}
                         key={item.label}
-                        className={cn(isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark-300_light900", "flex items-center justify-start gap-4 bg-transparent p-4")}
+                        className={cn(isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark-300_light900", isMobileNav ? 'justify-start' : 'justify-center lg:justify-start' , "flex items-center gap-4 bg-transparent p-4")}
                     >
                         <Image
                             src={item.imgURL}

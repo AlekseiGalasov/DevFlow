@@ -7,13 +7,13 @@ import ROUTES from "@/constans/routes";
 import {Button} from "@/components/ui/button";
 import {auth, signOut} from "@/auth";
 
-const SideBar = async () => {
+const LeftSideBar = async () => {
 
     const session = await auth()
 
     return (
         <aside className='sticky z-50 h-[calc(100vh)] w-[266px] background-light900_dark200
-        flex flex-col justify-between border-r-2 border-dark-500'>
+        hidden flex-col justify-between border-r-2 border-dark-500 sm:flex'>
             <div className="flex flex-col gap-4 px-6 pt-6">
                 <Link href='/' className='self-center flex items-center gap-1'>
                     <Image src='/images/site-logo.svg' alt='Dev flow logo' width={23} height={23}/>
@@ -59,4 +59,4 @@ const SideBar = async () => {
     );
 };
 
-export default SideBar;
+export default LeftSideBar;
