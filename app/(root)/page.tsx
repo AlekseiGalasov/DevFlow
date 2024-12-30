@@ -6,7 +6,7 @@ const Home = async () => {
 
     return (
         <div className='text-3xl font-black'>
-            <h2>Hello world</h2>
+            <h2>Hello world test test test test</h2>
         </div>
     );
 }
