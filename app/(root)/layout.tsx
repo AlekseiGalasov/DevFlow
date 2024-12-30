@@ -4,15 +4,17 @@ import LeftSideBar from "@/components/navigation/navbar/LeftSideBar";
 
 const RootLayout = ({children}: {children: ReactNode}) => {
     return (
-        <main>
+        <main className="background-light850_dark100 relative">
             <Navbar />
-            <main className="flex ">
+            <div className="flex">
                 <LeftSideBar />
-                <div className="pt-[84px] p-4 w-full">
-                    {children}
-                </div>
+                <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-36 max-md:pb14 sm:px-14">
+                    <div className="mx-auto w-full">
+                        {children}
+                    </div>
+                </section>
                 <div />
-            </main>
+            </div>
         </main>
     );
 };

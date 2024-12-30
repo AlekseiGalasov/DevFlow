@@ -12,18 +12,10 @@ const LeftSideBar = async () => {
     const session = await auth()
 
     return (
-        <aside className='sticky z-50 h-[calc(100vh)] w-[266px] background-light900_dark200
-        hidden flex-col justify-between border-r-2 border-dark-500 sm:flex'>
-            <div className="flex flex-col gap-4 px-6 pt-6">
-                <Link href='/' className='self-center flex items-center gap-1'>
-                    <Image src='/images/site-logo.svg' alt='Dev flow logo' width={23} height={23}/>
-                    <p className='h2-bold font-space-grotesk text-dark-100 dark:text-light-900'>
-                        Dev<span className='text-primary-500'>Flow</span>
-                    </p>
-                </Link>
-                <div className='mt-14 flex flex-col gap-6'>
-                    <NavLinks isMobileNav={false}/>
-                </div>
+        <section className='custom-scrollbar sticky left-0 top-0 h-screen pt-36 background-light900_dark200 light-border
+        flex flex-col justify-between border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]'>
+            <div className='flex flex-1 flex-col gap-6'>
+                <NavLinks isMobileNav={false}/>
             </div>
             {session?.user ?
                 <form className='flex flex-col px-6 pb-6' action={async () => {
@@ -36,26 +28,40 @@ const LeftSideBar = async () => {
                             alt={'Log out'}
                             width={24}
                             height={24}
-                            className='invert-colors'
+                            className='invert-colors lg:hidden'
                         />
-                        <p className='text-dark-300_light900' >Log out</p>
+                        <span className="max-lg:hidden">Log out</span>
                     </Button>
                 </form>
-                : <div className="flex flex-col gap-3 px-6 pb-6">
-                    <Link href={ROUTES.SIGN_IN}>
-                        <Button className="btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
-                            <span className="primary-text-gradient">Log in</span>
-                        </Button>
-                    </Link>
-                    <Link href={ROUTES.SIGN_UP}>
-                        <Button
-                            className="light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
-                            Sign Up
-                        </Button>
-                    </Link>
+                : <div className="flex flex-col gap-3">
+                    <Button asChild className="btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
+                        <Link href={ROUTES.SIGN_IN}>
+                            <Image
+                                src={'/icons/account.svg'}
+                                alt={'Log out'}
+                                width={24}
+                                height={24}
+                                className='invert-colors lg:hidden'
+                            />
+                            <span className="primary-text-gradient max-lg:hidden">Log in</span>
+                        </Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href={ROUTES.SIGN_UP}
+                              className="light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
+                            <Image
+                                src={'/icons/sign-up.svg'}
+                                alt={'Log out'}
+                                width={24}
+                                height={24}
+                                className='invert-colors lg:hidden'
+                            />
+                            <span className="max-lg:hidden">Sign up</span>
+                        </Link>
+                    </Button>
                 </div>
             }
-        </aside>
+        </section>
     );
 };
 
