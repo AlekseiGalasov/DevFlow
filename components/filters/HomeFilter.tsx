@@ -49,7 +49,10 @@ const HomeFilter = ({route}) => {
                     <Button
                         onClick={() => handleFilters(elem.value)}
                         key={elem._id}
-                        className={cn( filter === elem.value ? "primary-text-gradient background-dark-300_light900" : "text-dark-300_light900")}
+                        className={cn( filter === elem.value
+                            ? "bg-primary-100 text-primary-500 hover:bg-primary-100 dark:bg-dark-400 dark:text-primary-500 dark:hover:bg-dark-400"
+                            : "bg-light-800 text-light-500 hover:bg-light-800 dark:bg-dark-300 dark:text-light-500 dark:hover:bg-dark-300"
+                            , "body-medium rounded-lg px-6 py-3 capitalize shadow-none")}
                     >
                             {elem.name}
                     </Button>
