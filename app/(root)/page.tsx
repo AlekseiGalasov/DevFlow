@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
 import Link from "next/link";
 import LocalSearch from "@/components/search/LocalSearch";
+import HomeFilter from "@/components/filters/HomeFilter";
 
 const questions = [
     {
@@ -9,10 +10,10 @@ const questions = [
         title: "How to learn React?",
         description: "I want to learn React, can anyone help me?",
         tags: [
-            { _id: "1", name: "React" },
-            { _id: "2", name: "JavaScript" },
+            {_id: "1", name: "React"},
+            {_id: "2", name: "JavaScript"},
         ],
-        author: { _id: "1", name: "John Doe" },
+        author: {_id: "1", name: "John Doe"},
         upvotes: 10,
         answers: 5,
         views: 100,
@@ -23,10 +24,10 @@ const questions = [
         title: "How to learn JavaScript?",
         description: "I want to learn JavaScript, can anyone help me?",
         tags: [
-            { _id: "1", name: "React" },
-            { _id: "2", name: "JavaScript" },
+            {_id: "1", name: "React"},
+            {_id: "2", name: "JavaScript"},
         ],
-        author: { _id: "1", name: "John Doe" },
+        author: {_id: "1", name: "John Doe"},
         upvotes: 10,
         answers: 5,
         views: 100,
@@ -35,12 +36,12 @@ const questions = [
 ];
 
 interface SearchParams {
-    searchParams: Promise<{[key: string]: string}>
+    searchParams: Promise<{ [key: string]: string }>
 }
 
 const Home = async ({searchParams}: SearchParams) => {
 
-    const { query } = await searchParams
+    const {query} = await searchParams
 
     const filteredQuestions = query === undefined ? questions : questions.filter(question => question.title.includes(query));
 
@@ -54,13 +55,12 @@ const Home = async ({searchParams}: SearchParams) => {
                     </Link>
                 </Button>
             </section>
-            <section className='mt-11'>
-                <LocalSearch
-                    placeholder='Local search'
-                    imagePath='/icons/search.svg'
-                    route='/'
-                />
-            </section>
+            <LocalSearch
+                placeholder='Local search'
+                imagePath='/icons/search.svg'
+                route='/'
+            />
+            <HomeFilter route='/' />
             <section className='mt-10 flex w-full flex-col gap-6'>
                 {
                     filteredQuestions.map(question => (

@@ -47,8 +47,8 @@ const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchP
 
 
     return (
-        <div
-            className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4  rounded-[10px] px-4 ${otherClasses}`}>
+        <section
+            className={`mt-11 background-light800_darkgradient flex min-h-[56px] grow items-center gap-4  rounded-[10px] px-4 ${otherClasses}`}>
             {
                 imagePath && <Image src={imagePath} alt={'search'} width={24} height={24}/>
             }
@@ -59,7 +59,7 @@ const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchP
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />
-        </div>
+        </section>
     );
 };
 
