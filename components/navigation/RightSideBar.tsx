@@ -45,11 +45,11 @@ const RightSideBar = () => {
                         ))
                     }
                 </div>
-                <h3 className="mt-16 h3-bold text-dark200_light900">Top Questions</h3>
+                <h3 className="mt-16 h3-bold text-dark200_light900">Top Tags</h3>
                 <div className='mt-7 flex w-full flex-col gap-[30px]'>
                     {
                         popularTags.map((tag) => (
-                            <TagCard showCount compact name={tag.name} question={tag.count} _id={tag._id}/>
+                            <TagCard key={tag._id} showCount compact name={tag.name} question={tag.count} _id={tag._id}/>
                         ))
                     }
                 </div>
