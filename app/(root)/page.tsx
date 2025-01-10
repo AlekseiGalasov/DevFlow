@@ -1,13 +1,15 @@
+import Link from "next/link";
+
+import QuestionCard from "@/components/cards/QuestionCard";
+import HomeFilter from "@/components/filters/HomeFilter";
+import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
-import Link from "next/link";
-import LocalSearch from "@/components/search/LocalSearch";
-import HomeFilter from "@/components/filters/HomeFilter";
 
 const questions = [
     {
         _id: "1",
-        title: "How to learn React?",
+        title: "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
         description: "I want to learn React, can anyone help me?",
         tags: [
             {_id: "1", name: "React"},
@@ -16,8 +18,8 @@ const questions = [
         author: {_id: "1", name: "John Doe"},
         upvotes: 10,
         answers: 5,
-        views: 100,
-        createdAt: new Date(),
+        views: 1200000,
+        createdAt: new Date(2024, 11, 11),
     },
     {
         _id: "2",
@@ -28,9 +30,25 @@ const questions = [
             {_id: "2", name: "JavaScript"},
         ],
         author: {_id: "1", name: "John Doe"},
-        upvotes: 10,
-        answers: 5,
-        views: 100,
+        upvotes: 1000,
+        answers: 5235,
+        views: 1200,
+        createdAt: new Date(2020, 8, 25),
+    },
+    {
+        _id: "3",
+        title: "How to learn JavaScript?",
+        description: "I want to learn JavaScript, can anyone help me?",
+        tags: [
+            {_id: "1", name: "React"},
+            {_id: "2", name: "JavaScript"},
+            {_id: "3", name: "HTML"},
+            {_id: "4", name: "CSS"},
+        ],
+        author: {_id: "1", name: "SimonEblo"},
+        upvotes: 1000,
+        answers: 5235,
+        views: 1200,
         createdAt: new Date(),
     },
 ];
@@ -64,11 +82,7 @@ const Home = async ({searchParams}: SearchParams) => {
             <section className='mt-10 flex w-full flex-col gap-6'>
                 {
                     filteredQuestions.map(question => (
-                        <div key={question._id}>
-                            <p>{question.title}</p>
-                            <p>{question.description}</p>
-                            <p>{question.author.name}</p>
-                        </div>
+                        <QuestionCard key={question._id} questions={question} />
                     ))
                 }
             </section>

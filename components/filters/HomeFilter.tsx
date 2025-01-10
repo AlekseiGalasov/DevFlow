@@ -1,9 +1,10 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
-import {Button} from "@/components/ui/button";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {formUrlQuery, LOCAL_SEARCH_DELAY, removeKeysFromQuery} from "@/lib/url";
+import React, {useState} from 'react';
+
+import {Button} from "@/components/ui/button";
+import {formUrlQuery, removeKeysFromQuery} from "@/lib/url";
 import {cn} from "@/lib/utils";
 
 const filters = [
@@ -26,7 +27,7 @@ const HomeFilter = ({route}) => {
             setFilter(value)
             const newUrl = formUrlQuery({
                 params: searchParams.toString(),
-                value: value,
+                value,
                 key: 'filter'
             })
             router.push(newUrl, {scroll: false})
@@ -43,7 +44,7 @@ const HomeFilter = ({route}) => {
     }
 
     return (
-        <section className='flex hidden flex-wrap sm:flex gap-3 mt-10'>
+        <section className='mt-10 flex hidden flex-wrap gap-3 sm:flex'>
             {
                 filters.map(elem => (
                     <Button

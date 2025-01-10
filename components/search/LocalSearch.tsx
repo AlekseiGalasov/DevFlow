@@ -1,9 +1,10 @@
 'use client'
 
-import React, {EventHandler, useEffect, useState} from 'react';
-import {Input} from "@/components/ui/input";
 import Image from "next/image";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import React, {useEffect, useState} from 'react';
+
+import {Input} from "@/components/ui/input";
 import {formUrlQuery, LOCAL_SEARCH_DELAY, removeKeysFromQuery} from "@/lib/url";
 
 interface LocalSearchProps {
@@ -48,12 +49,12 @@ const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchP
 
     return (
         <section
-            className={`mt-11 background-light800_darkgradient flex min-h-[56px] grow items-center gap-4  rounded-[10px] px-4 ${otherClasses}`}>
+            className={`background-light800_darkgradient mt-11 flex min-h-[56px] grow items-center gap-4  rounded-[10px] px-4 ${otherClasses}`}>
             {
                 imagePath && <Image src={imagePath} alt={'search'} width={24} height={24}/>
             }
             <Input
-                className='border-none no-focus paragraph-regular placeholder text-dark400_light700 shadow-none outline-none'
+                className='no-focus paragraph-regular placeholder text-dark400_light700 border-none shadow-none outline-none'
                 type='text'
                 placeholder={placeholder}
                 value={search}
