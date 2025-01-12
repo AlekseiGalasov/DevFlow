@@ -50,7 +50,7 @@ const AuthForm = <T extends FieldValues>({formType, schema, defaultValues, onSub
                                             type={field.name === 'password' ? 'password' : 'text'}
                                             placeholder={defaultValues[field.name]}
                                             {...field}
-                                            className="paragraph-regular bacground-light900_dark300 light-border-2 text-dark-300_light700 no-focus min-h-12 rounded-1.5 border"
+                                            className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
                                         />
                                     </FormControl>
                                     <FormMessage />
