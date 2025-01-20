@@ -41,7 +41,7 @@ const QuestionCard = ({questions}: QuestionCardProps) => {
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimeStamp(questions.createdAt)}
           </span>
-            <Link href={ROUTES.ASK_QUESTION(questions._id.toString())}>
+            <Link href={ROUTES.ASK_QUESTION}>
                 <h3 className='text-dark400_light700 h3-semibold'>{questions.title}</h3>
             </Link>
             <div className='flex flex-wrap gap-2'>
