@@ -1,7 +1,6 @@
 import { Schema,Types, model, models } from "mongoose"
 
 export interface IAccount {
-    _id: string;
     userId: Types.ObjectId;
     name: string;
     image?: string;
@@ -10,8 +9,7 @@ export interface IAccount {
     providerAccountId: string;
 }
 
-const accountSchema = new Schema({
-        _id: {type: String, required: true},
+const accountSchema = new Schema<IAccount>({
         userId: { type: Schema.Types.ObjectId, ref: 'User', required: true},
         name: {type: String, required: true, unique: true},
         image: {type: String},
@@ -24,6 +22,6 @@ const accountSchema = new Schema({
     }
 )
 
-const User = models?.account || model<IAccount>("Account", accountSchema)
+const Account = models?.Account || model<IAccount>("Account", accountSchema)
 
-export default User
+export default Account
