@@ -5,6 +5,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
+import logger from "@/lib/handlers/logger";
 
 const questions = [
     {
