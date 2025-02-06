@@ -5,7 +5,9 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
-import logger from "@/lib/handlers/logger";
+import {fetchHandler} from "@/lib/handlers/fetch";
+import handleError from "@/lib/handlers/error";
+import {api} from "@/lib/api";
 
 const questions = [
     {
@@ -54,6 +56,15 @@ const questions = [
     },
 ];
 
+
+const test = async () => {
+    try {
+        return await api.users.getAll()
+    }catch (error) {
+        return handleError(error)
+    }
+}
+
 interface SearchParams {
     searchParams: Promise<{ [key: string]: string }>
 }
@@ -61,6 +72,10 @@ interface SearchParams {
 const Home = async ({searchParams}: SearchParams) => {
 
     const {query} = await searchParams
+
+    const users = await test()
+
+    console.log(users)
 
     const filteredQuestions = query === undefined ? questions : questions.filter(question => question.title.includes(query));
 

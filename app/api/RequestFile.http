@@ -1,0 +1,49 @@
+### Create new User
+### Must contain json unique fields - name, surname, email
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "name": "Test 2",
+  "username": "Aleksei Test 2",
+  "email": "aleksei2@gmail.com"
+}
+
+### Get User by Id
+### Must contain GET params like ID
+GET http://localhost:3000/api/users/67a4a5f2bc25a85b260e7381
+Content-Type: application/json
+
+### Get all users
+### Must contain GET params like ID
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+### Get User by Email
+### Must contain json email field
+POST http://localhost:3000/api/users/email
+Content-Type: application/json
+
+{
+  "email": "aleksei@gmail.com"
+}
+
+### Update user
+### Must contain json params
+PUT http://localhost:3000/api/users/67a4a5f2bc25a85b260e7381
+Content-Type: application/json
+
+{
+  "name": "Test 2",
+  "username": "Ivan Test 2",
+  "email": "aleksei3@gmail.com"
+}
+
+### Create new Account
+### Must contain json unique fields - name, surname, email
+POST http://localhost:3000/api/account
+Content-Type: application/json
+
+{
+  "email": "aleksei2@gmail.com"
+}

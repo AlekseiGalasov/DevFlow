@@ -5,6 +5,7 @@ import handleError from "@/lib/handlers/error";
 import {ValidationError} from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
 import {UserSchema} from "@/lib/validation";
+import {APIErrorResponse} from "@/types/global";
 
 // Get all users
 
@@ -27,13 +28,13 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
-        const vaildatedData = UserSchema.safeParse(body)
+        const validatedData = UserSchema.safeParse(body)
 
-        if (!vaildatedData.success) {
-            throw new ValidationError(vaildatedData.error.flatten().fieldErrors) // Validation Error
+        if (!validatedData.success) {
+            throw new ValidationError(validatedData.error.flatten().fieldErrors) // Validation Error
         }
 
-        const { email, username} = vaildatedData.data;
+        const { email, username} = validatedData.data;
 
         const existingUser = await User.findOne({email})
         if (existingUser) throw new Error('User Already exist')
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
         const existingUsername = await User.findOne({username})
         if (existingUsername) throw new Error('Username already exists')
 
-        const newUser = await User.create(vaildatedData.data);
+        const newUser = await User.create(validatedData.data);
         return NextResponse.json({success: true, data: newUser}, {status: 201})
     } catch (error) {
         return handleError(error, "api") as APIErrorResponse
