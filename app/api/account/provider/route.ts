@@ -1,5 +1,5 @@
 import {NotFoundError, ValidationError} from "@/lib/http-errors";
-import dbConnect from "@/lib/mongoose";
+import dbConnect from "@/lib/mongooseConn";
 import handleError from "@/lib/handlers/error";
 import {APIErrorResponse} from "@/types/global";
 import {NextResponse} from "next/server";
@@ -8,17 +8,17 @@ import Account from "@/database/account.model";
 
 export async function POST(request: Request) {
 
-    const { accountProviderId } = await request.json();
-
+    const { providerAccountId } = await request.json();
     try {
         await dbConnect();
-        const validatedProviderId = AccountSchema.partial().safeParse({accountProviderId})
+        const validatedProviderId = AccountSchema.partial().safeParse({providerAccountId})
 
         if (!validatedProviderId.success) {
             throw new ValidationError(validatedProviderId.error.flatten().fieldErrors) // Validation Error
         }
 
-        const account = await Account.findOne({ accountProviderId })
+        const account = await Account.findOne({ providerAccountId })
+
 
         if (!account) throw new NotFoundError('Account')
 

@@ -5,56 +5,9 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
-import {fetchHandler} from "@/lib/handlers/fetch";
 import handleError from "@/lib/handlers/error";
 import {api} from "@/lib/api";
-
-const questions = [
-    {
-        _id: "1",
-        title: "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
-        description: "I want to learn React, can anyone help me?",
-        tags: [
-            {_id: "1", name: "React"},
-            {_id: "2", name: "JavaScript"},
-        ],
-        author: {_id: "1", name: "John Doe"},
-        upvotes: 10,
-        answers: 5,
-        views: 1200000,
-        createdAt: new Date(2024, 11, 11),
-    },
-    {
-        _id: "2",
-        title: "How to learn JavaScript?",
-        description: "I want to learn JavaScript, can anyone help me?",
-        tags: [
-            {_id: "1", name: "React"},
-            {_id: "2", name: "JavaScript"},
-        ],
-        author: {_id: "1", name: "John Doe"},
-        upvotes: 1000,
-        answers: 5235,
-        views: 1200,
-        createdAt: new Date(2020, 8, 25),
-    },
-    {
-        _id: "3",
-        title: "How to learn JavaScript?",
-        description: "I want to learn JavaScript, can anyone help me?",
-        tags: [
-            {_id: "1", name: "React"},
-            {_id: "2", name: "JavaScript"},
-            {_id: "3", name: "HTML"},
-            {_id: "4", name: "CSS"},
-        ],
-        author: {_id: "1", name: "SimonEblo"},
-        upvotes: 1000,
-        answers: 5235,
-        views: 1200,
-        createdAt: new Date(),
-    },
-];
+import {GetAllQuestions} from "@/lib/actions/question.action";
 
 
 const test = async () => {
@@ -73,11 +26,11 @@ const Home = async ({searchParams}: SearchParams) => {
 
     const {query} = await searchParams
 
-    const users = await test()
+    const {success, data} = await GetAllQuestions()
 
-    console.log(users)
+    const filteredQuestions = query === undefined ? data : data.filter(question => question.title.includes(query));
 
-    const filteredQuestions = query === undefined ? questions : questions.filter(question => question.title.includes(query));
+    console.log(filteredQuestions)
 
     return (
         <>

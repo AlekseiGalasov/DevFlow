@@ -11,11 +11,11 @@ import {cn} from "@/lib/utils";
 
 interface NavLinksProps {
     isMobileNav?: boolean
+    userId: string
 }
-const NavLinks = ({isMobileNav = false}: NavLinksProps) => {
+const NavLinks = ({isMobileNav = false, userId}: NavLinksProps) => {
 
     const pathname = usePathname()
-    const userId = 21;
 
     return (
         <>
@@ -37,7 +37,7 @@ const NavLinks = ({isMobileNav = false}: NavLinksProps) => {
                             height={20}
                             className={cn({"invert-colors": !isActive})}
                         />
-                        <p className={cn(isActive ? "base-bold" : "base-meduim", !isMobileNav && "max-lg:hidden")}>{item.label}</p>
+                        <p className={cn(isActive ? "base-bold" : "base-medium", !isMobileNav && "max-lg:hidden")}>{item.label}</p>
                     </Link>
                 )
 

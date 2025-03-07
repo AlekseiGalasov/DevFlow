@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/mongoose";
+import dbConnect from "@/lib/mongooseConn";
 import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
 import {NextResponse} from "next/server";

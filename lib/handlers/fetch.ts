@@ -1,6 +1,5 @@
 import {RequestError} from "@/lib/http-errors";
 import type {ActionResponse} from "@/types/global";
-import logger from "@/lib/handlers/logger";
 import handleError from "@/lib/handlers/error";
 
 
@@ -52,9 +51,9 @@ export async function fetchHandler<T>(
         const error = isError(err) ? err : new Error("Unknown error")
 
         if (error.name === 'AbortError') {
-            logger.wait(`Request to ${url} timed out`)
+            console.warn(`Request to ${url} timed out`)
         } else {
-            logger.warn(`Error fetching ${url}: ${error.message}`)
+            console.warn(`Error fetching ${url}: ${error.message}`)
         }
 
         return handleError(error) as ActionResponse<T>

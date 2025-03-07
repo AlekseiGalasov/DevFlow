@@ -1,4 +1,5 @@
-import { Schema,Types, model, models } from "mongoose"
+import {Schema, Types, model, models, Document} from "mongoose"
+import {IAccount} from "@/database/account.model";
 
 export interface IQuestion {
     title: string;
@@ -11,10 +12,11 @@ export interface IQuestion {
     author: Types.ObjectId;
 }
 
+export interface IQuestionDoc extends IQuestion, Document {}
 const questionSchema = new Schema<IQuestion>({
         title: {type: String, required: true},
         content: {type: String},
-        tags: [{type: Schema.Types.ObjectId, ref: 'Tags'}],
+        tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}],
         views: {type: Number, default: 0},
         upvotes: {type: Number, default: 0},
         downvotes: {type: Number, default: 0},

@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose"
+import { Schema, model, models, Document } from "mongoose"
 
 export interface IUser {
     name: string;
@@ -10,6 +10,7 @@ export interface IUser {
     portfolio?: string;
     reputation?: number;
 }
+export interface IUserDoc extends IUser, Document {}
 
 const userSchema = new Schema<IUser>({
         name: {type: String, required: true},

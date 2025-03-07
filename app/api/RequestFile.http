@@ -47,3 +47,19 @@ Content-Type: application/json
 {
   "email": "aleksei2@gmail.com"
 }
+
+
+### OAuth
+### Must contain json unique fields - name, surname, email
+POST http://localhost:3000/api/auth/signin-with-oauth
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "providerAccountId": "12121",
+  "user": {
+    "name": "Aleksei",
+    "username": "Og",
+    "email": "aleksei@gmail.com"
+  }
+}

@@ -14,6 +14,7 @@ interface Author {
 interface Question {
     _id: string;
     title: string;
+    content: string
     tags: Tag[];
     author: Author;
     createdAt: Date;
@@ -32,6 +33,11 @@ type ActionResponse<T = null> = {
     };
     status?: number;
 };
+
+interface RouteParams {
+    params: Promise<Record<string, string>>;
+    searchParams: Promise<Record<string, string>>;
+}
 
 type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
 type ErrorResponse = ActionResponse<undefined> & { success: false };

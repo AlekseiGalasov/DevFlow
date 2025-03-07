@@ -1,10 +1,10 @@
 import {NotFoundError, ValidationError} from "@/lib/http-errors";
-import dbConnect from "@/lib/mongoose";
 import handleError from "@/lib/handlers/error";
 import {APIErrorResponse} from "@/types/global";
 import {AccountSchema} from "@/lib/validation";
 import {NextResponse} from "next/server";
 import Account from "@/database/account.model";
+import dbConnect from "@/lib/mongooseConn";
 
 // get single account with special ID
 export async function GET(_: Request, {params}: {params: Promise<{id: string}>}) {

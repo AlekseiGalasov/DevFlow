@@ -1,15 +1,14 @@
 import pino from "pino";
-import 'pino-pretty'
 
 const isEdge = process.env.NEXT_RUNTIME === 'edge'
 const isProduction = process.env.NODE_ENV === 'production'
 
 const logger = pino({
-    level: 'info',
+    level: process.env.LOG_LEVEL || 'info',
     transport: !isEdge && !isProduction ? {
         target: 'pino-pretty',
         options: {
-            colorize: true,
+            colorize: false,
             ignore: "pid,hostname",
             translateTime: "SYS:standard"
         }
@@ -17,7 +16,7 @@ const logger = pino({
     formatters: {
         level: (label) => ({level: label.toUpperCase()}),
     },
-    timestamp: pino.stdTimeFunctions.isoTime
+    timestamp: true
 })
 
 export default logger

@@ -9,30 +9,48 @@ import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import ROUTES from "@/constans/routes";
+import {ActionResponse} from "@/types/global";
+import {toast} from "@/hooks/use-toast";
+import {useRouter} from "next/navigation";
 
 interface AuthFormProps<T extends FieldValues> {
     defaultValues: T;
     schema: ZodType<T>;
-    onSubmit: (data: T) => Promise<{success: boolean}>;
+    onSubmit: (data: T) => Promise<ActionResponse>;
     formType: "SIGN_IN" | "SIGN_UP"
 }
 
 const AuthForm = <T extends FieldValues>({formType, schema, defaultValues, onSubmit}: AuthFormProps<T>) => {
-    // 1. Define your form.
+
+    const router = useRouter()
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: defaultValues as DefaultValues<T>
     })
 
-    const handleSubmit: SubmitHandler<T> = async () => {
-        onSubmit()
+    const handleSubmit: SubmitHandler<T> = async (data) => {
+        const result = await onSubmit(data) as ActionResponse
+
+        if (result?.success) {
+            toast({
+                title: `Success`,
+                description: formType === 'SIGN_UP' ? 'Signed in successfully' : 'Signed up successfully' ,
+            })
+            router.push(ROUTES.HOME)
+        } else {
+            toast({
+                title: `Error ${result.status}`,
+                description: `Error ${result.error?.message}`,
+                variant: 'destructive'
+            })
+        }
     }
 
     const buttonText = formType === 'SIGN_IN' ? 'Sign in' : 'Sign up'
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="mt-10 space-y-8">
+            <form action={form.handleSubmit(handleSubmit)} className="mt-10 space-y-8">
                 {
                     Object.keys(defaultValues).map((field) => (
                         <FormField
