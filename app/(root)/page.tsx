@@ -6,6 +6,8 @@ import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
 import {GetAllQuestions} from "@/lib/actions/question.action";
+import DataRenderer from "@/components/DataRenderer";
+import {EMPTY_QUESTION} from "@/constans/states";
 
 interface SearchParams {
     searchParams: Promise<{ [key: string]: string }>
@@ -15,7 +17,7 @@ const Home = async ({searchParams}: SearchParams) => {
 
     const {query, filter, page, pageSize} = await searchParams
 
-    const { success, data, error } = await GetAllQuestions({
+    const {success, data, error} = await GetAllQuestions({
         query: query || "",
         filter: filter || "",
         pageSize: Number(pageSize) || 10,
@@ -39,27 +41,20 @@ const Home = async ({searchParams}: SearchParams) => {
                 imagePath='/icons/search.svg'
                 route='/'
             />
-            <HomeFilter route='/' />
-            {
-                success ?
-                    <section className='mt-10 flex w-full flex-col gap-6'>
-                        {
-                            questions && questions.length ? questions.map(question => (
-                                <QuestionCard key={question._id} questions={question}/>
-                            )) : (
-                                <div className='mt-10 flex w-full items-center justify-center'>
-                                    <p className='text-dark400_light700'>No questions found</p>
-                                </div>
-                            )
-                        }
-                        {
-                            isNext && <p>Pagination!!!</p>
-                        }
-                    </section> :
-                    <section className='mt-10 flex w-full items-center justify-center'>
-                        <p className='text-dark400_light700'>{error?.message || 'Failed to fetch questions'}</p>
-                    </section>
-            }
+            <HomeFilter route='/'/>
+            <DataRenderer
+                success={success}
+                error={error}
+                data={questions}
+                empty={EMPTY_QUESTION}
+                render={(questions) => (
+                    <div className="mt-10 flex w-full flex-col gap-6">
+                        {questions.map((question) => (
+                            <QuestionCard key={question._id} question={question} />
+                        ))}
+                    </div>
+                )}
+            />
         </>
     );
 }
