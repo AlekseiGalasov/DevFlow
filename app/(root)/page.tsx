@@ -5,18 +5,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constans/routes";
-import handleError from "@/lib/handlers/error";
-import {api} from "@/lib/api";
 import {GetAllQuestions} from "@/lib/actions/question.action";
-
-
-const test = async () => {
-    try {
-        return await api.users.getAll()
-    }catch (error) {
-        return handleError(error)
-    }
-}
 
 interface SearchParams {
     searchParams: Promise<{ [key: string]: string }>
@@ -24,13 +13,16 @@ interface SearchParams {
 
 const Home = async ({searchParams}: SearchParams) => {
 
-    const {query} = await searchParams
+    const {query, filter, page, pageSize} = await searchParams
 
-    const {success, data} = await GetAllQuestions()
+    const { success, data, error } = await GetAllQuestions({
+        query: query || "",
+        filter: filter || "",
+        pageSize: Number(pageSize) || 10,
+        page: Number(page) || 1,
+    });
 
-    const filteredQuestions = query === undefined ? data : data.filter(question => question.title.includes(query));
-
-    console.log(filteredQuestions)
+    const {questions, isNext} = data
 
     return (
         <>
@@ -48,13 +40,26 @@ const Home = async ({searchParams}: SearchParams) => {
                 route='/'
             />
             <HomeFilter route='/' />
-            <section className='mt-10 flex w-full flex-col gap-6'>
-                {
-                    filteredQuestions.map(question => (
-                        <QuestionCard key={question._id} questions={question} />
-                    ))
-                }
-            </section>
+            {
+                success ?
+                    <section className='mt-10 flex w-full flex-col gap-6'>
+                        {
+                            questions && questions.length ? questions.map(question => (
+                                <QuestionCard key={question._id} questions={question}/>
+                            )) : (
+                                <div className='mt-10 flex w-full items-center justify-center'>
+                                    <p className='text-dark400_light700'>No questions found</p>
+                                </div>
+                            )
+                        }
+                        {
+                            isNext && <p>Pagination!!!</p>
+                        }
+                    </section> :
+                    <section className='mt-10 flex w-full items-center justify-center'>
+                        <p className='text-dark400_light700'>{error?.message || 'Failed to fetch questions'}</p>
+                    </section>
+            }
         </>
     );
 }

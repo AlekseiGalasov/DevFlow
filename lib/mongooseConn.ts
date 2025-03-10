@@ -1,4 +1,5 @@
 import mongoose, {Mongoose} from "mongoose";
+import '@/database/index';
 
 const MONGODB_URI = process.env.MONGO_DB_URI as string
 

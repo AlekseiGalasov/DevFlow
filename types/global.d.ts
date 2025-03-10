@@ -39,6 +39,14 @@ interface RouteParams {
     searchParams: Promise<Record<string, string>>;
 }
 
+interface PaginationSearchParams {
+    page?: number
+    pageSize?: number
+    query?: string
+    filter?: string
+    sort?: string
+}
+
 type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
 type ErrorResponse = ActionResponse<undefined> & { success: false };
 

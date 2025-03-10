@@ -1,5 +1,4 @@
-import {Schema, Types, model, models, Document} from "mongoose"
-import {IAccount} from "@/database/account.model";
+import {Document, model, models, Schema, Types} from "mongoose"
 
 export interface IQuestion {
     title: string;
