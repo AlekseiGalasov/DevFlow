@@ -7,7 +7,7 @@ import ROUTES from "@/constans/routes";
 import {getDeviconClassName} from "@/lib/utils";
 
 interface TagCardProps {
-    _id: string ;
+    _id: string;
     name: string;
     question?: string;
     showCount?: boolean;
@@ -57,7 +57,7 @@ const TagCard = ({name, _id, question, compact, showCount, handleRemove, remove,
                 {content}
             </button>
         ) : (
-            <Link className="flex-between flex gap-2" href={ROUTES.TAGS(_id)}>
+            <Link className="flex-between flex gap-2" href={ROUTES.TAG(_id)}>
                 {content}
             </Link>
         )

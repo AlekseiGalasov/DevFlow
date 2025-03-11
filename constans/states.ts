@@ -35,7 +35,7 @@ export const EMPTY_TAGS = {
     message: "The tag cloud is empty. Add some keywords to make it rain.",
     button: {
         text: "Create Tag",
-        href: ROUTES.TAGS,
+        href: ROUTES.HOME,
     },
 };
 

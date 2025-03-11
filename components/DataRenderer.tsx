@@ -59,7 +59,6 @@ const StateSkeleton = ({
                 className="block object-contain dark:hidden"
             />
         </>
-
         <h2 className="h2-bold text-dark200_light900 mt-8">{title}</h2>
         <p className="body-regular text-dark500_light700 my-3.5 max-w-md text-center">
             {message}
