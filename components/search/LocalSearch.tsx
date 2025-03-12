@@ -12,9 +12,10 @@ interface LocalSearchProps {
     imagePath?: string
     otherClasses?: string
     route: string
+    iconPosition?: 'left' | 'right'
 }
 
-const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchProps) => {
+const LocalSearch = ({placeholder, imagePath, otherClasses, route, iconPosition = 'left'}: LocalSearchProps) => {
     const pathname = usePathname()
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -51,7 +52,7 @@ const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchP
         <section
             className={`background-light800_darkgradient mt-11 flex min-h-[56px] grow items-center gap-4  rounded-[10px] px-4 ${otherClasses}`}>
             {
-                imagePath && <Image src={imagePath} alt={'search'} width={24} height={24}/>
+                iconPosition === 'left' && imagePath && <Image src={imagePath} alt={'search'} width={24} height={24}/>
             }
             <Input
                 className='no-focus paragraph-regular placeholder text-dark400_light700 border-none shadow-none outline-none'
@@ -60,6 +61,9 @@ const LocalSearch = ({placeholder, imagePath, otherClasses, route}: LocalSearchP
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />
+            {
+                iconPosition === 'right' && imagePath && <Image src={imagePath} alt={'search'} width={24} height={24}/>
+            }
         </section>
     );
 };

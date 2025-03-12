@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="a26c0afa-9aca-4d58-aecb-9791b64ee7d8" name="mongodb+srv://alekseigalasov:xXMquC7vgPngWLwY@devflowcluster.gckvq.mongodb.net/?retryWrites=true&amp;w=majority&amp;appName=DevFlowCluster Mapping">
+      <data-sources db="f9fee1da-a1dd-4467-bbe6-150bbf050cfe" />
+      <scope>
+        <node kind="database" negative="1">
+          <node kind="schema" negative="1" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+</project>
