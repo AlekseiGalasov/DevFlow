@@ -1,13 +1,11 @@
 import React from 'react';
 
-import QuestionCard from "@/components/cards/QuestionCard";
 import TagCard from "@/components/cards/TagCard";
 import DataRenderer from "@/components/DataRenderer";
-import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
-import {EMPTY_QUESTION, EMPTY_TAGS} from "@/constans/states";
+import {EMPTY_TAGS} from "@/constans/states";
 import {getAllTags} from "@/lib/actions/tag.action";
-import {RouteParams} from "@/types/global";
+import {RouteParams, Tag} from "@/types/global";
 
 const Tags = async ({searchParams}: RouteParams) => {
 
@@ -20,7 +18,7 @@ const Tags = async ({searchParams}: RouteParams) => {
         page: Number(page) || 1,
     })
 
-    const {tags, isNext} = data
+    const {tags} = data
 
     return (
         <>
@@ -34,16 +32,15 @@ const Tags = async ({searchParams}: RouteParams) => {
                     route='/tags'
                     otherClasses='flex-1'
                 />
-                <HomeFilter route='/tags'/>
                 <section>
                     <DataRenderer
                         success={success}
                         error={error}
                         data={tags}
                         empty={EMPTY_TAGS}
-                        render={(tags) => (
+                        render={(tags: Tag[]) => (
                             <section className="mt-10 flex w-full flex-wrap gap-4">
-                                {tags.map((tag) => (
+                                {tags.map((tag: Tag) => (
                                     <TagCard key={tag._id} question={tag.questions} _id={tag._id} name={tag.name} />
                                 ))}
                             </section>

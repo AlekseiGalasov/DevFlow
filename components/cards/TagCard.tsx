@@ -9,7 +9,7 @@ import {cn, getDeviconClassName, getTechDescription} from "@/lib/utils";
 interface TagCardProps {
     _id: string;
     name: string;
-    question?: string;
+    question?: number;
     showCount?: boolean;
     compact?: boolean;
     remove?: boolean

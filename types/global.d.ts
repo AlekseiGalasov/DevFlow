@@ -3,6 +3,7 @@ import {NextResponse} from "next/server";
 interface Tag {
     _id: string;
     name: string;
+    questions: number
 }
 
 interface Author {
@@ -46,6 +47,7 @@ interface PaginationSearchParams {
     filter?: string
     sort?: string
 }
+
 
 type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
 type ErrorResponse = ActionResponse<undefined> & { success: false };

@@ -1,13 +1,14 @@
 "use server"
 
-import {ActionResponse, ErrorResponse, PaginationSearchParams} from "@/types/global";
-import action from "@/lib/handlers/action";
-import {AskQuestionSchema, EditQuestionSchema, GetQuestionSchema, PaginationSearchParamsSchema} from "@/lib/validation";
-import handleError from "@/lib/handlers/error";
 import mongoose, { FilterQuery } from "mongoose";
-import Question, {IQuestion, IQuestionDoc} from "@/database/question.model";
-import Tag, {ITagDoc} from "@/database/tag.model";
+
+import Questions, {IQuestion, IQuestionDoc} from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
+import Tags, {ITagDoc} from "@/database/tag.model";
+import action from "@/lib/handlers/action";
+import handleError from "@/lib/handlers/error";
+import {AskQuestionSchema, EditQuestionSchema, GetQuestionSchema, PaginationSearchParamsSchema} from "@/lib/validation";
+import {ActionResponse, ErrorResponse, PaginationSearchParams} from "@/types/global";
 
 
 export async function CreateQuestion(params: CreateQuestionParams): Promise<ActionResponse> {
@@ -30,7 +31,7 @@ export async function CreateQuestion(params: CreateQuestionParams): Promise<Acti
 
     try {
 
-        const [question] = await Question.create([{title, content, author: userId}], {session})
+        const [question] = await Questions.create([{title, content, author: userId}], {session})
 
         if (!question) {
             throw new Error("Failed to create question");
@@ -40,7 +41,7 @@ export async function CreateQuestion(params: CreateQuestionParams): Promise<Acti
         const tagQuestionDocs = []
 
         for (const tag of tags) {
-            const existingTag = await Tag.findOneAndUpdate(
+            const existingTag = await Tags.findOneAndUpdate(
                 { name: { $regex: new RegExp(`^${tag}$`, "i") } },
                 { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
                 {upsert: true, new: true, session}
@@ -55,7 +56,7 @@ export async function CreateQuestion(params: CreateQuestionParams): Promise<Acti
 
         await TagQuestion.insertMany(tagQuestionDocs, {session})
 
-        await Question.findByIdAndUpdate(
+        await Questions.findByIdAndUpdate(
             question._id,
             { $push: {tags: {$each: tagIds}}},
             { session}
@@ -93,7 +94,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
 
     try {
 
-        const question = await Question.findById(questionId).populate('tags') as IQuestionDoc
+        const question = await Questions.findById(questionId).populate('tags') as IQuestionDoc
 
         if (!question) {
             throw new Error('Question not found')
@@ -121,7 +122,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
 
         if (tagsToAdd.length > 0) {
             for (const tag of tagsToAdd) {
-                const newOrUpdatedTag = await Tag.findOneAndUpdate(
+                const newOrUpdatedTag = await Tags.findOneAndUpdate(
                     { name: { $regex: new RegExp(`^${tag}$`, "i") } },
                     { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
                     {upsert: true, new: true, session}
@@ -141,7 +142,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
         if (tagsToRemove.length > 0) {
             const tagIdsToRemove = tagsToRemove.map(tag => tag._id);
 
-            await Tag.updateMany(
+            await Tags.updateMany(
                 {_id: {$in: tagIdsToRemove}},
                 {$inc: {questions: -1}},
                 { session }
@@ -192,7 +193,7 @@ export async function GetQuestionById (params: GetQuestionParams) {
     const { questionId } = validationResult.params
 
     try {
-        const question = await Question.findById(questionId)
+        const question = await Questions.findById(questionId)
             .populate("tags")
             .populate("author", "_id name image");;
 
@@ -221,7 +222,7 @@ export async function GetAllQuestions (params: PaginationSearchParams): Promise<
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 
-    const filterQuery: FilterQuery<typeof Question> = {}
+    const filterQuery: FilterQuery<typeof Questions> = {}
 
     if (filter === 'recommended') {
         return {success: true, data: {questions: [], isNext: false} }
@@ -254,10 +255,10 @@ export async function GetAllQuestions (params: PaginationSearchParams): Promise<
 
     try {
 
-        const totalQuestions = await Question.countDocuments(filterQuery)
+        const totalQuestions = await Questions.countDocuments(filterQuery)
 
 
-        const questions = await Question.find(filterQuery)
+        const questions = await Questions.find(filterQuery)
             .populate("tags", 'name')
             .populate("author", "name image")
             .lean()

@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
 
+import {auth} from "@/auth";
 import MobileNavigation from "@/components/navigation/navbar/MobileNavigation";
 import Theme from "@/components/navigation/navbar/Theme";
-import {auth} from "@/auth";
-import UserAvatar from "@/components/navigation/UserAvatar";
+import UserAvatar from "@/components/UserAvatar";
 
 const Navbar = async () => {
 

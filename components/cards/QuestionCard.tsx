@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from 'react';
 
 import TagCard from "@/components/cards/TagCard";
+import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constans/routes";
 import {getKCounts, getTimeStamp} from "@/lib/utils";
 import {Question} from "@/types/global";
@@ -30,10 +31,15 @@ const QuestionCard = ({question}: Props) => {
             </div>
             <div className='flex flex-col flex-wrap justify-between gap-4 sm:flex-row'>
                 <div className='text-dark400_light700 flex flex-row items-center gap-2 text-light-400'>
-                    <Image className='invert-colors' src={'/icons/avatar.svg'} alt={'User icon'} width={20} height={20} />
-                    <p className='body-medium'>{question.author.name}</p>
+                    <UserAvatar
+                        className='size-[22px]'
+                        fallbackClassName='text-[12px]'
+                        id={question.author._id}
+                        name={question.author.name}
+                        imageUrl={question.author.image}
+                    />
                     <div className='size-[6px] rounded-lg bg-dark-300 dark:bg-light-700' />
-                    <span className=' small-regular'>asked {getTimeStamp(new Date(question.createdAt))}</span>
+                    <span className='small-regular'>asked {getTimeStamp(new Date(question.createdAt))}</span>
                 </div>
                 <div className='text-dark400_light700 flex flex-row items-center gap-2'>
                     <div className='flex gap-2'>
