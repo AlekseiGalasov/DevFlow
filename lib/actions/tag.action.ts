@@ -166,5 +166,4 @@ export async function getTopTags(): Promise<ActionResponse<{ tags: Tag[]}>> {
     } catch (error) {
         return handleError(error) as ErrorResponse
     }
-
 }

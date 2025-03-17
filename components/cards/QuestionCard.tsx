@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from 'react';
 
 import TagCard from "@/components/cards/TagCard";
+import Metric from "@/components/Metric";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constans/routes";
 import {getKCounts, getTimeStamp} from "@/lib/utils";
@@ -31,29 +32,38 @@ const QuestionCard = ({question}: Props) => {
             </div>
             <div className='flex flex-col flex-wrap justify-between gap-4 sm:flex-row'>
                 <div className='text-dark400_light700 flex flex-row items-center gap-2 text-light-400'>
-                    <UserAvatar
-                        className='size-[22px]'
-                        fallbackClassName='text-[12px]'
-                        id={question.author._id}
-                        name={question.author.name}
-                        imageUrl={question.author.image}
+                    <Metric
+                        imgUrl={question.author.image}
+                        alt={question.author.name}
+                        value={question.author.name}
+                        title={`• asked ${getTimeStamp( new Date(question.createdAt))}`}
+                        href={ROUTES.PROFILE(question.author._id)}
+                        textStyles="body-medium text-dark400_light700"
+                        isAuthor
                     />
-                    <div className='size-[6px] rounded-lg bg-dark-300 dark:bg-light-700' />
-                    <span className='small-regular'>asked {getTimeStamp(new Date(question.createdAt))}</span>
                 </div>
                 <div className='text-dark400_light700 flex flex-row items-center gap-2'>
-                    <div className='flex gap-2'>
-                        <Image src={'/icons/like.svg'} alt={'Like icon'} width={16} height={16} />
-                        <p className='small-medium'>{getKCounts(question.upvotes)} Votes</p>
-                    </div>
-                    <div className='flex gap-2'>
-                        <Image src={'/icons/message.svg'} alt={'Message icon'} width={16} height={16} />
-                        <p className='small-medium'>{getKCounts(question.answers)} Answers</p>
-                    </div>
-                    <div className='flex gap-2'>
-                        <Image src={'/icons/eye.svg'} alt={'Eye icon'} width={16} height={16} />
-                        <p className='small-medium'>{getKCounts(question.views)} Views</p>
-                    </div>
+                    <Metric
+                        imgUrl="/icons/like.svg"
+                        alt="like"
+                        value={getKCounts(question.upvotes)}
+                        title=" Votes"
+                        textStyles="small-medium text-dark400_light800"
+                    />
+                    <Metric
+                        imgUrl="/icons/message.svg"
+                        alt="answers"
+                        value={getKCounts(question.answers)}
+                        title=" Answers"
+                        textStyles="small-medium text-dark400_light800"
+                    />
+                    <Metric
+                        imgUrl="/icons/eye.svg"
+                        alt="views"
+                        value={getKCounts(question.views)}
+                        title=" Views"
+                        textStyles="small-medium text-dark400_light800"
+                    />
                 </div>
             </div>
         </div>

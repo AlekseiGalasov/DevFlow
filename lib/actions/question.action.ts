@@ -8,7 +8,8 @@ import Tags, {ITagDoc} from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
 import {AskQuestionSchema, EditQuestionSchema, GetQuestionSchema, PaginationSearchParamsSchema} from "@/lib/validation";
-import {ActionResponse, ErrorResponse, PaginationSearchParams} from "@/types/global";
+import {CreateQuestionParams, EditQuestionParams, GetQuestionParams} from "@/types/action";
+import {ActionResponse, ErrorResponse, PaginationSearchParams, Question, Tag} from "@/types/global";
 
 
 export async function CreateQuestion(params: CreateQuestionParams): Promise<ActionResponse> {
@@ -178,7 +179,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
     }
 }
 
-export async function GetQuestionById (params: GetQuestionParams) {
+export async function GetQuestionById (params: GetQuestionParams): Promise<ActionResponse<Question>> {
 
     const validationResult = await action({
         params,
