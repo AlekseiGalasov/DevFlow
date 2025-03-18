@@ -36,3 +36,11 @@ interface QuestionByTagParams extends Omit<PaginationSearchParams, 'filter'> {
     tagId: string
 }
 
+interface AnswersByQuestionIdParams extends Omit<PaginationSearchParams, 'query' | 'sort'> {
+    questionId: string
+}
+
+interface CreateAnswerParams {
+    questionId: string;
+    content: string;
+}

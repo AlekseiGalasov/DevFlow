@@ -25,6 +25,17 @@ interface Question {
     createdAt: Date;
 }
 
+interface Answer {
+    _id: string
+    author: Author
+    question: string
+    content: string
+    createdAt: Date
+    updatedAt: Date
+    upvotes: number
+    downvotes: number
+}
+
 type ActionResponse<T = null> = {
     success: boolean;
     data?: T;

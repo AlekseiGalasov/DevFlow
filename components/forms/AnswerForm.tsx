@@ -5,21 +5,23 @@ import {MDXEditorMethods} from "@mdxeditor/editor";
 import {ReloadIcon} from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
 import Image from 'next/image'
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useTransition} from "react";
 import {useForm} from "react-hook-form"
 import {z} from "zod"
 
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormMessage,} from "@/components/ui/form"
+import {toast} from "@/hooks/use-toast";
+import {createAnswer} from "@/lib/actions/answer.action";
 import {AnswerSchema} from "@/lib/validation";
 
 const Editor = dynamic(() => import('@/components/editor'), {
     ssr: false
 })
 
-const AnswerForm = () => {
+const AnswerForm = ({questionId}: {questionId: string}) => {
 
-    const [isSubmitting, setIsSubmitting] = useState(true)
+    const [isAnswering, startAnsweringTransition] = useTransition()
     const [isAiSubmitting, setIsAiSubmitting] = useState(false)
 
     const editorRef = useRef<MDXEditorMethods>(null)
@@ -29,21 +31,22 @@ const AnswerForm = () => {
     })
 
     const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
-
-        console.log(values)
-        // if (result?.success) {
-        //     toast({
-        //         title: `Success`,
-        //         description: formType === 'SIGN_UP' ? 'Signed in successfully' : 'Signed up successfully' ,
-        //     })
-        //     router.push(ROUTES.HOME)
-        // } else {
-        //     toast({
-        //         title: `Error ${result.status}`,
-        //         description: `Error ${result.error?.message}`,
-        //         variant: 'destructive'
-        //     })
-        // }
+        startAnsweringTransition(async () => {
+            const result = await createAnswer({ questionId, content: values.content })
+            if (result?.success) {
+                form.reset()
+                toast({
+                    title: `Success`,
+                    description: 'Answer created!',
+                })
+            } else {
+                toast({
+                    title: `Error ${result.status}`,
+                    description: `Error ${result.error?.message}`,
+                    variant: 'destructive'
+                })
+            }
+        })
     }
 
     return (
@@ -88,10 +91,10 @@ const AnswerForm = () => {
                     <div className='flex justify-end'>
                         <Button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={isAnswering}
                             className="primary-gradient w-fit"
                         >
-                            {isSubmitting ?
+                            {isAnswering ?
                                 <>
                                     <ReloadIcon className="mr-2 size-4 animate-spin"/>
                                     Posting

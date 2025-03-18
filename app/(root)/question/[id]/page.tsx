@@ -3,6 +3,7 @@ import {notFound, redirect} from "next/navigation";
 import React from 'react';
 
 import {auth} from "@/auth";
+import AllAnswers from "@/components/answers/AllAnswers";
 import TagCard from "@/components/cards/TagCard";
 import Preview from "@/components/editor/preview";
 import AnswerForm from "@/components/forms/AnswerForm";
@@ -10,6 +11,7 @@ import Metric from "@/components/Metric";
 import {Button} from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constans/routes";
+import {getAnswersByQuestionId} from "@/lib/actions/answer.action";
 import {GetQuestionById} from "@/lib/actions/question.action";
 import {getKCounts, getTimeStamp} from "@/lib/utils";
 import {RouteParams, Tag} from "@/types/global";
@@ -27,9 +29,16 @@ const QuestionDetails = async ({params}: RouteParams) => {
         return redirect("/sign-in");
     }
 
-    const {success, data: question} = await GetQuestionById({questionId: id})
+    const {success: questionSuccess, data: question} = await GetQuestionById({questionId: id})
 
-    if (!success || !question) return redirect("/404");
+    if (!questionSuccess || !question) return redirect("/404");
+
+    const {success: answersSuccess, data: answers, error: answersError} = await getAnswersByQuestionId({
+        questionId: id,
+        filter: 'popular',
+        page: 1,
+        pageSize: 10
+    })
 
     const isAuthor = session.user.id === question.author._id
 
@@ -48,11 +57,11 @@ const QuestionDetails = async ({params}: RouteParams) => {
                         <Link className='paragraph-semibold text-dark300_light700' href={ROUTES.PROFILE(question.author._id)}>
                             {question.author.name}
                         </Link>
-                        <Button asChild className='primary-gradient ml-auto px-4 py-3 !text-light-900'>
-                            <Link href={ROUTES.ASK_QUESTION}>
-                                Ask a question
+                        { isAuthor && <Button asChild className='primary-gradient ml-auto px-4 py-3 !text-light-900'>
+                            <Link href={ROUTES.EDIT_QUESTION(id)}>
+                                Edit a question
                             </Link>
-                        </Button>
+                        </Button>}
                     </div>
                     <div className='flex justify-end'>
                         <p>Votes</p>
@@ -71,7 +80,7 @@ const QuestionDetails = async ({params}: RouteParams) => {
                 <Metric
                     imgUrl={'/icons/message.svg'}
                     alt={'message icon'}
-                    value={question.answers.length}
+                    value={question.answers}
                     title=''
                     textStyles='small-regular text-dark400_light700'
                 />
@@ -89,7 +98,15 @@ const QuestionDetails = async ({params}: RouteParams) => {
                     <TagCard compact key={tag._id} question={tag.questions} _id={tag._id} name={tag.name} />
                 ))}
             </div>
-            <AnswerForm />
+            <section>
+                <AllAnswers
+                    data={answers?.answers}
+                    success={answersSuccess}
+                    error={answersError}
+                    totalAnswers={answers?.totalAnswers || 0}
+                />
+            </section>
+            <AnswerForm questionId={question._id} />
         </>
     );
 };

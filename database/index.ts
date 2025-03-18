@@ -1,5 +1,5 @@
 import Account from './account.model'
-import Answer from './answer.models'
+import Answers from './answer.models'
 import Collection from './collection.model'
 import Interaction from './interaction.model'
 import Questions from './question.model'
@@ -10,7 +10,7 @@ import Vote from './vote.model'
 
 export {
     Account,
-    Answer,
+    Answers,
     Questions,
     Collection,
     Interaction,
