@@ -63,3 +63,14 @@ Content-Type: application/json
     "email": "aleksei@gmail.com"
   }
 }
+
+
+
+### Create AI response for the question
+POST http://localhost:3000/api/ai/answers
+Content-Type: application/json
+
+{
+"question": "What is the difference between SQL and NoSQL databases",
+"content": "Sql database are relational, structured, and use tables with predefined schemas.Example include MySQL and PostgreSQL. NoSQL databases, like MongoDb and Firebase , are flexible schema-less, and better suited for handling unstructured data and high scalability"
+}
