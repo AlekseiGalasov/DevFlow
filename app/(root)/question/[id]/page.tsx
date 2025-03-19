@@ -10,6 +10,7 @@ import AnswerForm from "@/components/forms/AnswerForm";
 import Metric from "@/components/Metric";
 import {Button} from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
+import Votes from "@/components/votes/Votes";
 import ROUTES from "@/constans/routes";
 import {getAnswersByQuestionId} from "@/lib/actions/answer.action";
 import {GetQuestionById} from "@/lib/actions/question.action";
@@ -64,7 +65,12 @@ const QuestionDetails = async ({params}: RouteParams) => {
                         </Button>}
                     </div>
                     <div className='flex justify-end'>
-                        <p>Votes</p>
+                        <Votes
+                            upvotes={question.upvotes}
+                            downvotes={question.downvotes}
+                            hasupVoted={true}
+                            hasdownVoted={false}
+                        />
                     </div>
                 </div>
                 <h2 className='h2-semibold text-dark200_light900 mt-3.5 w-full'>{question.title}</h2>
