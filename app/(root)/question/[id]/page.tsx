@@ -112,7 +112,7 @@ const QuestionDetails = async ({params}: RouteParams) => {
                     totalAnswers={answers?.totalAnswers || 0}
                 />
             </section>
-            <AnswerForm questionId={question._id} />
+            <AnswerForm questionTitle={question.title} questionContent={question.content} questionId={question._id} />
         </>
     );
 };

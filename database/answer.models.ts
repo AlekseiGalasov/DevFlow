@@ -21,6 +21,6 @@ const answerSchema = new Schema<IAnswer>({
     }
 )
 
-const Answers = models?.Answer || model<IAnswer>("Answers", answerSchema)
+const Answers = models?.Answers || model<IAnswer>("Answers", answerSchema)
 
 export default Answers
