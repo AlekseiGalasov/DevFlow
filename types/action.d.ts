@@ -44,3 +44,13 @@ interface CreateAnswerParams {
     questionId: string;
     content: string;
 }
+
+interface CreateVoteParams {
+    actionId: string
+    type: "question" | "answer"
+    voteType: "upvote" | "downvote"
+}
+
+interface UpdateVoteCountParams extends CreateVoteParams {
+    change: 1 | -1;
+}

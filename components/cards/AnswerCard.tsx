@@ -3,6 +3,7 @@ import React from 'react';
 
 import Preview from "@/components/editor/preview";
 import UserAvatar from "@/components/UserAvatar";
+import Votes from "@/components/votes/Votes";
 import ROUTES from "@/constans/routes";
 import {getTimeStamp} from "@/lib/utils";
 import {Answer} from "@/types/global";
@@ -31,7 +32,14 @@ const AnswerCard = (answer: Answer) => {
                     </Link>
                 </div>
                 <div className='flex justify-end'>
-                    Votes
+                    <Votes
+                        upvotes={upvotes}
+                        downvotes={downvotes}
+                        hasupVoted={true}
+                        hasdownVoted={false}
+                        type='answer'
+                        actionId={_id}
+                    />
                 </div>
             </div>
             <Preview content={content} />

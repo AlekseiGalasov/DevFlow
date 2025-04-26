@@ -15,7 +15,6 @@ type ActionOption<T> = {
 
 async function action<T>({ authorize = false, params, schema }: ActionOption<T>) {
 
-
     if (schema && params) {
         try {
             schema.parse(params)

@@ -58,7 +58,6 @@ export async function createAnswer(params: CreateAnswerParams): Promise<ActionRe
     } finally {
         await session.endSession()
     }
-
 }
 
 export async function getAnswersByQuestionId(params: AnswersByQuestionIdParams): Promise<ActionResponse<{ answers: Answer[], isNext: boolean, totalAnswers: number}>> {

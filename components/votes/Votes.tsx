@@ -5,6 +5,7 @@ import {useSession} from "next-auth/react";
 import React, {useState} from 'react';
 
 import {toast} from "@/hooks/use-toast";
+import {createVote} from "@/lib/actions/vote.action";
 import {getKCounts} from "@/lib/utils";
 
 interface VotesProps {
@@ -12,16 +13,18 @@ interface VotesProps {
     downvotes: number
     hasupVoted: boolean
     hasdownVoted: boolean
+    type: "question" | "answer"
+    actionId: string
 }
 
 const Votes = (props: VotesProps) => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const {hasdownVoted, hasupVoted, upvotes, downvotes} = props
+    const {hasdownVoted, hasupVoted, upvotes, downvotes, type, actionId} = props
     const session = useSession()
     const userId = session.data?.user?.id
 
-    const handleVote = async (type: 'upvote' | 'downvote') => {
+    const handleVote = async (voteType: 'upvote' | 'downvote') => {
         if (!userId) {
             return toast({
                 title: 'Please login to vote',
@@ -32,14 +35,17 @@ const Votes = (props: VotesProps) => {
         setIsLoading(true)
 
         try {
-            const successMessage = type === 'upvote' ?
+            const result = await createVote({type, voteType, actionId})
+            const successMessage = voteType === 'upvote' ?
                 `Upvote ${!hasupVoted ? 'added' : 'removed'} successfully` :
                 `Downvote ${!hasdownVoted ? 'added' : 'removed'} successfully`
 
-            toast({
-                title: successMessage,
-                description: 'Your vote has been recorded'
-            })
+            if (result?.success) {
+                toast({
+                    title: successMessage,
+                    description: 'Your vote has been recorded'
+                })
+            }
         } catch {
             toast({
                 title: 'Failed to vote',
