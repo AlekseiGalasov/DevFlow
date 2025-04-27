@@ -1,13 +1,15 @@
 'use server'
 
 import mongoose, {ClientSession} from "mongoose";
+import {revalidatePath} from "next/cache";
 
+import ROUTES from "@/constans/routes";
 import {Answers, Questions} from "@/database";
 import Vote, {IVoteDoc} from "@/database/vote.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
-import {CreateVoteSchema, UpdateVoteCountSchema} from "@/lib/validation";
-import {CreateVoteParams, UpdateVoteCountParams} from "@/types/action";
+import {CreateVoteSchema, HasVotedSchema, UpdateVoteCountSchema} from "@/lib/validation";
+import {CreateVoteParams, HasVotedParams, HasVotedResponse, UpdateVoteCountParams} from "@/types/action";
 import {ActionResponse, ErrorResponse} from "@/types/global";
 
 
@@ -59,7 +61,7 @@ export async function createVote(params: CreateVoteParams): Promise<ActionRespon
     const { type, voteType, actionId } = validationResult.params
     const userId = validationResult.session?.user?.id
 
-    if (!userId) handleError(new Error("Unauthorized")) as ErrorResponse;
+    if (!userId) return handleError(new Error("Unauthorized")) as ErrorResponse;
 
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -86,8 +88,8 @@ export async function createVote(params: CreateVoteParams): Promise<ActionRespon
                     { voteType },
                     {new: true, session}
                 )
-
                 await updateVoteCount({voteType, change: 1, actionId, type}, session)
+                await updateVoteCount({voteType: existingVote.voteType, change: -1, actionId, type}, session)
             }
         } else {
             // if user do not voted yet, CREATE a new vote
@@ -101,6 +103,8 @@ export async function createVote(params: CreateVoteParams): Promise<ActionRespon
         }
 
         await session.commitTransaction()
+        
+        revalidatePath(ROUTES.QUESTION(actionId))
 
         return {success: true};
     } catch (error) {
@@ -108,5 +112,40 @@ export async function createVote(params: CreateVoteParams): Promise<ActionRespon
         return handleError(error) as ErrorResponse
     } finally {
         await session.endSession()
+    }
+}
+
+export async function hasVoted(params: HasVotedParams): Promise<ActionResponse<HasVotedResponse>> {
+
+    const validationResult = await action({
+        params,
+        schema: HasVotedSchema,
+        authorize: true
+    })
+
+    if (validationResult instanceof Error) {
+        return handleError(validationResult) as ErrorResponse;
+    }
+
+    const {actionId, type } = validationResult.params!;
+    const userId = validationResult.session?.user?.id
+
+    if (!userId) handleError(new Error("Unauthorized")) as ErrorResponse;
+
+    try {
+        const vote = await Vote.findOne({
+            author: userId,
+            type,
+            actionId
+        })
+        if (!vote) {
+            return {success: false, data: {hasUpvoted: false, hasDownvoted: false}};
+        }
+
+        const isUpvoted = vote.voteType === 'upvote'
+
+        return {success: true, data: {hasUpvoted: isUpvoted, hasDownvoted: !isUpvoted}};
+    } catch (error) {
+        return handleError(error) as ErrorResponse;
     }
 }

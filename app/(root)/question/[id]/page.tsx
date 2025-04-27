@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {notFound, redirect} from "next/navigation";
-import React from 'react';
+import React, {Suspense} from 'react';
 
 import {auth} from "@/auth";
 import AllAnswers from "@/components/answers/AllAnswers";
@@ -14,6 +14,7 @@ import Votes from "@/components/votes/Votes";
 import ROUTES from "@/constans/routes";
 import {getAnswersByQuestionId} from "@/lib/actions/answer.action";
 import {GetQuestionById} from "@/lib/actions/question.action";
+import {hasVoted} from "@/lib/actions/vote.action";
 import {getKCounts, getTimeStamp} from "@/lib/utils";
 import {RouteParams, Tag} from "@/types/global";
 
@@ -34,6 +35,8 @@ const QuestionDetails = async ({params}: RouteParams) => {
 
     if (!questionSuccess || !question) return redirect("/404");
 
+    const hasVotedPromise = hasVoted({actionId: question._id, type: 'question'})
+
     const {success: answersSuccess, data: answers, error: answersError} = await getAnswersByQuestionId({
         questionId: id,
         filter: 'popular',
@@ -48,31 +51,33 @@ const QuestionDetails = async ({params}: RouteParams) => {
             <div className='flex-start w-full flex-col'>
                 <div className='flex w-full flex-col-reverse justify-between'>
                     <div className='flex items-center gap-1'>
-                         <UserAvatar
+                        <UserAvatar
                             id={question.author._id}
                             name={question.author.name}
                             imageUrl={question.author.image}
                             className='size-[22px]'
                             fallbackClassName='text-[10px]'
-                         />
-                        <Link className='paragraph-semibold text-dark300_light700' href={ROUTES.PROFILE(question.author._id)}>
+                        />
+                        <Link className='paragraph-semibold text-dark300_light700'
+                              href={ROUTES.PROFILE(question.author._id)}>
                             {question.author.name}
                         </Link>
-                        { isAuthor && <Button asChild className='primary-gradient ml-auto px-4 py-3 !text-light-900'>
+                        {isAuthor && <Button asChild className='primary-gradient ml-auto px-4 py-3 !text-light-900'>
                             <Link href={ROUTES.EDIT_QUESTION(id)}>
                                 Edit a question
                             </Link>
                         </Button>}
                     </div>
                     <div className='flex justify-end'>
-                        <Votes
-                            upvotes={question.upvotes}
-                            downvotes={question.downvotes}
-                            hasupVoted={false}
-                            hasdownVoted={false}
-                            type='question'
-                            actionId={question._id}
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Votes
+                                upvotes={question.upvotes}
+                                downvotes={question.downvotes}
+                                hasVotedPromise={hasVotedPromise}
+                                type='question'
+                                actionId={question._id}
+                            />
+                        </Suspense>
                     </div>
                 </div>
                 <h2 className='h2-semibold text-dark200_light900 mt-3.5 w-full'>{question.title}</h2>
@@ -100,10 +105,10 @@ const QuestionDetails = async ({params}: RouteParams) => {
                     textStyles='small-regular text-dark400_light700'
                 />
             </div>
-            <Preview content={question.content} />
+            <Preview content={question.content}/>
             <div className='mt-8 flex flex-wrap gap-2'>
                 {question && question.tags.map((tag: Tag) => (
-                    <TagCard compact key={tag._id} question={tag.questions} _id={tag._id} name={tag.name} />
+                    <TagCard compact key={tag._id} question={tag.questions} _id={tag._id} name={tag.name}/>
                 ))}
             </div>
             <section>
@@ -114,7 +119,7 @@ const QuestionDetails = async ({params}: RouteParams) => {
                     totalAnswers={answers?.totalAnswers || 0}
                 />
             </section>
-            <AnswerForm questionTitle={question.title} questionContent={question.content} questionId={question._id} />
+            <AnswerForm questionTitle={question.title} questionContent={question.content} questionId={question._id}/>
         </>
     );
 };
