@@ -39,6 +39,11 @@ export const EMPTY_TAGS = {
     },
 };
 
+export const EMPTY_USERS = {
+    title: "No Users Found",
+    message: "Selected user not found. Maybe you have mistake in Name.",
+};
+
 export const EMPTY_ANSWERS = {
     title: "No answers found",
     message: "The answer board is empty",

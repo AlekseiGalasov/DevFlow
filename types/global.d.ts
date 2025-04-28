@@ -18,12 +18,23 @@ interface Question {
     content: string
     tags: Tag[];
     author: Author;
-    createdAt: Date;
     upvotes: number;
     downvotes: number;
     answers: number;
     views: number;
     createdAt: Date;
+}
+
+interface User {
+    _id: string;
+    name: string;
+    username: string;
+    email: string
+    bio?: string;
+    image?: string;
+    location?: string;
+    portfolio?: string;
+    reputation?: number;
 }
 
 interface Answer {
