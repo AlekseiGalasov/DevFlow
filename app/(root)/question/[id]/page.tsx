@@ -21,10 +21,11 @@ import {getKCounts, getTimeStamp} from "@/lib/utils";
 import {RouteParams, Tag} from "@/types/global";
 
 
-const QuestionDetails = async ({params}: RouteParams) => {
+const QuestionDetails = async ({params, searchParams}: RouteParams) => {
 
     const {id} = await params
 
+    const {page, pageSize, filter } = await searchParams;
     if (!id) return notFound();
 
     const session = await auth()
@@ -42,9 +43,9 @@ const QuestionDetails = async ({params}: RouteParams) => {
 
     const {success: answersSuccess, data: answers, error: answersError} = await getAnswersByQuestionId({
         questionId: id,
-        filter: 'popular',
-        page: 1,
-        pageSize: 10
+        filter,
+        page: Number(page) || 1,
+        pageSize: Number(pageSize) || 10
     })
 
     const isAuthor = session.user.id === question.author._id

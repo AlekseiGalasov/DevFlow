@@ -2,6 +2,8 @@ import React from 'react';
 
 import AnswerCard from "@/components/cards/AnswerCard";
 import DataRenderer from "@/components/DataRenderer";
+import CommonFilter from "@/components/filters/CommonFilter";
+import {AnswerPageFilters} from "@/constans/filters";
 import {EMPTY_ANSWERS} from "@/constans/states";
 import {ActionResponse, Answer} from "@/types/global";
 
@@ -13,7 +15,11 @@ const AllAnswers = ({totalAnswers, data, success, error}: AllAnswersProps) => {
     return <div className='mt-11'>
         <div className='flex items-center justify-between'>
             <h3 className='primary-text-gradient'>{totalAnswers} {totalAnswers === 1 ? 'Answer' : 'Answers'}</h3>
-            <p>Filters</p>
+            <CommonFilter
+                filters={AnswerPageFilters}
+                otherClasses="min-h-[56px] sm:min-w-[170px]"
+                containerClasses="max-md:flex"
+            />
         </div>
         <DataRenderer
             success={success}

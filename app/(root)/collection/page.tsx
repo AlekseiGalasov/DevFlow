@@ -2,11 +2,13 @@ import {SearchParams} from "next/dist/server/request/search-params";
 import {redirect} from "next/navigation";
 import React from 'react';
 
-import { auth } from "@/auth";
+import {auth} from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRenderer from "@/components/DataRenderer";
+import CommonFilter from "@/components/filters/CommonFilter";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
+import {CollectionPageFilters, HomePageFilters} from "@/constans/filters";
 import ROUTES from "@/constans/routes";
 import {EMPTY_QUESTION} from "@/constans/states";
 import {GetAllUserCollection} from "@/lib/actions/collection.action";
@@ -34,11 +36,18 @@ const Collections = async (searchParams: SearchParams) => {
             <section className='flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center'>
                 <h2 className='h1-bold text-dark100_light900'>Collection</h2>
             </section>
-            <LocalSearch
-                placeholder='Local search'
-                imagePath='/icons/search.svg'
-                route='/'
-            />
+            <section className='mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center'>
+                <LocalSearch
+                    placeholder='Local search'
+                    imagePath='/icons/search.svg'
+                    route='/'
+                />
+                <CommonFilter
+                    filters={CollectionPageFilters}
+                    otherClasses="min-h-[56px] sm:min-w-[170px]"
+                    containerClasses="max-md:flex"
+                />
+            </section>
             <HomeFilter route='/'/>
             <DataRenderer
                 success={success}
@@ -48,7 +57,7 @@ const Collections = async (searchParams: SearchParams) => {
                 render={(collection) => (
                     <div className="mt-10 flex w-full flex-col gap-6">
                         {collection.map((item) => (
-                            <QuestionCard key={item._id} question={item.question} />
+                            <QuestionCard key={item._id} question={item.question}/>
                         ))}
                     </div>
                 )}
