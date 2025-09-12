@@ -58,7 +58,7 @@ export async function createVote(params: CreateVoteParams): Promise<ActionRespon
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { type, voteType, actionId } = validationResult.params
+    const { type, voteType, actionId } = validationResult.params as CreateVoteParams;
     const userId = validationResult.session?.user?.id
 
     if (!userId) return handleError(new Error("Unauthorized")) as ErrorResponse;

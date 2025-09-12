@@ -1,6 +1,6 @@
 "use server"
 
-import mongoose, { FilterQuery } from "mongoose";
+import mongoose, {FilterQuery} from "mongoose";
 
 import Questions, {IQuestion, IQuestionDoc} from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
@@ -9,7 +9,7 @@ import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
 import {AskQuestionSchema, EditQuestionSchema, GetQuestionSchema, PaginationSearchParamsSchema} from "@/lib/validation";
 import {CreateQuestionParams, EditQuestionParams, GetQuestionParams} from "@/types/action";
-import {ActionResponse, ErrorResponse, PaginationSearchParams, Question, Tag} from "@/types/global";
+import {ActionResponse, ErrorResponse, PaginationSearchParams, Question} from "@/types/global";
 
 
 export async function CreateQuestion(params: CreateQuestionParams): Promise<ActionResponse> {
@@ -24,7 +24,7 @@ export async function CreateQuestion(params: CreateQuestionParams): Promise<Acti
         return handleError(validationResult) as ErrorResponse
     }
 
-    const {tags, title, content} = validationResult.params
+    const {tags, title, content} = validationResult.params as CreateQuestionParams
     const userId = validationResult.session?.user?.id
 
     const session = await mongoose.startSession()
@@ -87,7 +87,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
         return handleError(validationResult) as ErrorResponse
     }
 
-    const {questionId, content, title, tags} = validationResult.params
+    const {questionId, content, title, tags} = validationResult.params as EditQuestionParams
     const userId = validationResult.session?.user?.id
 
     const session = await mongoose.startSession();
@@ -140,7 +140,7 @@ export async function EditQuestion(params: EditQuestionParams): Promise<ActionRe
             }
         }
 
-        if (tagsToRemove.length > 0) {
+        if (tagsToRemove && tagsToRemove.length > 0) {
             const tagIdsToRemove = tagsToRemove.map(tag => tag._id);
 
             await Tags.updateMany(
@@ -191,7 +191,7 @@ export async function GetQuestionById (params: GetQuestionParams): Promise<Actio
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { questionId } = validationResult.params
+    const { questionId } = validationResult.params as GetQuestionParams
 
     try {
         const question = await Questions.findById(questionId)
@@ -219,7 +219,7 @@ export async function GetAllQuestions (params: PaginationSearchParams): Promise<
         return handleError(validationResult) as ErrorResponse
     }
 
-    const {sort, filter, page = 1, pageSize = 10, query} = validationResult.params
+    const {filter, page = 1, pageSize = 10, query} = validationResult.params as PaginationSearchParams
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 

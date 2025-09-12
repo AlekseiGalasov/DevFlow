@@ -22,7 +22,7 @@ const HomeFilter = ({route}) => {
     const filterParam = searchParams.get('filter') || ''
     const [filter, setFilter] = useState(filterParam)
 
-    const handleFilters = (value) => {
+    const handleFilters = (value: string) => {
         if (value !== filter) {
             setFilter(value)
             const newUrl = formUrlQuery({
@@ -44,7 +44,7 @@ const HomeFilter = ({route}) => {
     }
 
     return (
-        <section className='mt-10 flex hidden flex-wrap gap-3 sm:flex'>
+        <section className='mt-10 flex flex-wrap gap-3 sm:flex'>
             {
                 filters.map(elem => (
                     <Button

@@ -1,15 +1,17 @@
 "use server"
 
-import {ActionResponse, ErrorResponse} from "@/types/global";
-import action from "@/lib/handlers/action";
-import {SignInSchema, SignUpSchema} from "@/lib/validation";
-import handleError from "@/lib/handlers/error";
-import mongoose from "mongoose";
-import User, {IUserDoc} from "@/database/user.model";
 import bcrypt from 'bcryptjs';
-import Account, {IAccountDoc} from "@/database/account.model";
+import mongoose from "mongoose";
+
 import {signIn} from "@/auth";
+import Account, {IAccountDoc} from "@/database/account.model";
+import User, {IUserDoc} from "@/database/user.model";
+import action from "@/lib/handlers/action";
+import handleError from "@/lib/handlers/error";
 import {NotFoundError} from "@/lib/http-errors";
+import {SignInSchema, SignUpSchema} from "@/lib/validation";
+import {AuthWithCredentialParams} from "@/types/action";
+import {ActionResponse, ErrorResponse} from "@/types/global";
 
 
 export async function authWithCredentials(params: AuthWithCredentialParams): Promise<ActionResponse> {
@@ -19,7 +21,7 @@ export async function authWithCredentials(params: AuthWithCredentialParams): Pro
         return handleError(validationResult) as ErrorResponse
     }
 
-    const {name, username, password, email} = validationResult.params
+    const {name, username, password, email} = validationResult.params as AuthWithCredentialParams
 
     const session = await mongoose.startSession()
     session.startTransaction()
@@ -71,7 +73,7 @@ export async function loginWithCredentials(params: Pick<AuthWithCredentialParams
         return handleError(validationResult) as ErrorResponse
     }
 
-    const {password, email} = validationResult.params
+    const {password, email} = validationResult.params as Pick<AuthWithCredentialParams, 'email' | 'password'>
 
     try {
         const user = await User.findOne({ email }) as IUserDoc

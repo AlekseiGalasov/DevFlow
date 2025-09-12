@@ -26,7 +26,7 @@ export async function createAnswer(params: CreateAnswerParams): Promise<ActionRe
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { content, questionId } = validationResult.params
+    const { content, questionId } = validationResult.params as CreateAnswerParams
     const userId = validationResult.session?.user?.id
 
     const session = await mongoose.startSession()
@@ -72,7 +72,7 @@ export async function getAnswersByQuestionId(params: AnswersByQuestionIdParams):
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { questionId, page = 1, pageSize = 10, filter } = validationResult.params
+    const { questionId, page = 1, pageSize = 10, filter } = validationResult.params as AnswersByQuestionIdParams
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 

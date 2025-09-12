@@ -27,7 +27,7 @@ export async function getAllTags(params: PaginationSearchParams): Promise<Action
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { filter, page = 1, pageSize = 10, query} = validationResult.params
+    const { filter, page = 1, pageSize = 10, query} = validationResult.params as PaginationSearchParams
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 
@@ -94,7 +94,7 @@ export async function getQuestionsByTag(params: QuestionByTagParams): Promise<Ac
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { page = 1, pageSize = 10, query, tagId} = validationResult.params
+    const { page = 1, pageSize = 10, query, tagId} = validationResult.params as QuestionByTagParams
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 

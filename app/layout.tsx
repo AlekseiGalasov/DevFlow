@@ -1,12 +1,13 @@
 import type {Metadata} from "next";
 import localFont from "next/font/local";
+import {SessionProvider} from "next-auth/react";
 import React, {ReactNode} from "react";
 
 import "./globals.css";
 import ThemeProvider from "@/app/context/Theme";
-import {Toaster} from "@/components/ui/toaster";
-import {SessionProvider} from "next-auth/react";
 import {auth} from "@/auth";
+import {Toaster} from "@/components/ui/toaster";
+
 
 const inter = localFont({
     src: "./fonts/Inter.ttf",
@@ -38,6 +39,7 @@ const RootLayout = async ({children}: { children: ReactNode }) => {
         <head>
             <link rel="stylesheet" type='text/css'
                   href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
+            <title>{metadata.title && ''}</title>
         </head>
         <SessionProvider session={session}>
             <body
@@ -50,7 +52,7 @@ const RootLayout = async ({children}: { children: ReactNode }) => {
                 disableTransitionOnChange
             >
                 {children}
-                <Toaster/>
+                <Toaster />
             </ThemeProvider>
             </body>
         </SessionProvider>

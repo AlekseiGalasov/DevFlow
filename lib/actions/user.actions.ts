@@ -20,7 +20,7 @@ export async function getAllUsers(params: PaginationSearchParams): Promise<Actio
         return handleError(validationResult) as ErrorResponse
     }
 
-    const { filter, page = 1, pageSize = 10, query} = validationResult.params
+    const { filter, page = 1, pageSize = 10, query} = validationResult.params as PaginationSearchParams
     const skip = (Number(page) - 1) * pageSize
     const limit = Number(pageSize)
 

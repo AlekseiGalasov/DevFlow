@@ -1,4 +1,5 @@
 import mongoose, {Mongoose} from "mongoose";
+
 import '@/database/index';
 
 const MONGODB_URI = process.env.MONGO_DB_URI as string
@@ -35,7 +36,7 @@ const dbConnect = async () : Promise<Mongoose> => {
             console.info("Connected to MongoDB")
             return result
         }).catch((error) => {
-            logger.error("Error connectiong to MongoDb", error)
+            console.error("Error connecting to MongoDb", error)
             throw error
         })
     }

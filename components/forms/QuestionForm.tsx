@@ -17,6 +17,7 @@ import ROUTES from "@/constans/routes";
 import {toast} from "@/hooks/use-toast";
 import {CreateQuestion, EditQuestion} from "@/lib/actions/question.action";
 import {AskQuestionSchema} from "@/lib/validation";
+import {EditQuestionParams} from "@/types/action";
 import {Question} from "@/types/global";
 
 const Editor = dynamic(() => import('@/components/editor'), {

@@ -20,8 +20,6 @@ const RightSideBar = async () => {
 
     const {data} = await getTopTags()
 
-    const {tags} = data
-
     return (
         <section className='custom-scrollbar background-light900_dark200 light-border sticky
          right-0 top-0 flex h-screen w-[350px] flex-col gap-6 overflow-y-auto border-l p-6
@@ -46,13 +44,13 @@ const RightSideBar = async () => {
                     }
                 </div>
                 <h3 className="h3-bold text-dark200_light900 mt-16">Top Tags</h3>
-                <div className='mt-7 flex w-full flex-col gap-[30px]'>
-                    {
-                        tags && tags.length > 0 && tags.map((tag: Tag) => (
-                            <TagCard key={tag._id} showCount compact name={tag.name} question={tag.questions} _id={tag._id}/>
-                        ))
-                    }
-                </div>
+                {/* <div className='mt-7 flex w-full flex-col gap-[30px]'> */}
+                {/*    { */}
+                {/*        tags && tags.length > 0 && tags.map((tag: Tag) => ( */}
+                {/*            <TagCard key={tag._id} showCount compact name={tag.name} question={tag.questions} _id={tag._id}/> */}
+                {/*        )) */}
+                {/*    } */}
+                {/* </div> */}
             </div>
         </section>
     );

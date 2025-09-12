@@ -61,3 +61,9 @@ interface HasVotedResponse {
     hasUpvoted: boolean
     hasDownvoted: boolean
 }
+
+type AddToCollectionParams = Pick<GetQuestionParams, 'questionId'>
+
+interface HasCollectionResponse {
+    haveInCollection: boolean
+}

@@ -1,11 +1,13 @@
-import React from 'react';
-import NavLinks from "@/components/navigation/navbar/NavLinks";
-import Link from "next/link";
-import Image from "next/image";
-import ROUTES from "@/constans/routes";
-import {Button} from "@/components/ui/button";
-import {auth, signOut} from "@/auth";
 import {LogOut} from 'lucide-react'
+import Image from "next/image";
+import Link from "next/link";
+import React from 'react';
+
+import {auth, signOut} from "@/auth";
+import NavLinks from "@/components/navigation/navbar/NavLinks";
+import {Button} from "@/components/ui/button";
+import ROUTES from "@/constans/routes";
+
 
 const LeftSideBar = async () => {
 
@@ -13,10 +15,10 @@ const LeftSideBar = async () => {
     const userId = session?.user?.id
 
     return (
-        <section className='custom-scrollbar sticky left-0 top-0 h-screen pt-36 background-light900_dark200 light-border
-        flex flex-col justify-between border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]'>
+        <section className='custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen
+        flex-col justify-between border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]'>
             <div className='flex flex-1 flex-col gap-6'>
-                <NavLinks userId={userId} isMobileNav={false}/>
+                <NavLinks userId={userId ?? ''} isMobileNav={false}/>
             </div>
             {userId ?
                 <form className='flex flex-col px-6 pb-6' action={async () => {
@@ -27,7 +29,7 @@ const LeftSideBar = async () => {
                         <LogOut
                             className='size-5 text-black dark:text-white'
                         />
-                        <span className="max-lg:hidden text-dark300_light900">Logout</span>
+                        <span className="text-dark300_light900 max-lg:hidden">Logout</span>
                     </Button>
                 </form>
                 : <div className="flex flex-col gap-3">

@@ -48,6 +48,12 @@ interface Answer {
     downvotes: number
 }
 
+interface Collection {
+    _id: string;
+    author: string | Author;
+    question: Question;
+}
+
 type ActionResponse<T = null> = {
     success: boolean;
     data?: T;

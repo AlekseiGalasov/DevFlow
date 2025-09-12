@@ -1,13 +1,14 @@
-import NextAuth from "next-auth"
 import GitHub from "@auth/core/providers/github";
 import Google from "@auth/core/providers/google";
-import {ActionResponse} from "@/types/global";
-import {api} from "@/lib/api";
-import {IUserDoc} from "@/database/user.model";
-import {SignInSchema} from "@/lib/validation";
-import {IAccountDoc} from "@/database/account.model";
 import bcrypt from "bcryptjs";
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials";
+
+import {IAccountDoc} from "@/database/account.model";
+import {IUserDoc} from "@/database/user.model";
+import {api} from "@/lib/api";
+import {SignInSchema} from "@/lib/validation";
+import {ActionResponse} from "@/types/global";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -27,7 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     const {data: existingUser} = await api.users.getById(existingAccount.userId.toString()) as ActionResponse<IUserDoc>
                     if (!existingUser) return null
 
-                    const isValidPassword = bcrypt.compare(password, existingAccount.password!)
+                    const isValidPassword = await bcrypt.compare(password, existingAccount.password!)
 
                     if (isValidPassword) {
                         user = {

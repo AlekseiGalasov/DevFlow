@@ -1,8 +1,9 @@
-import React from 'react';
 import Image from "next/image";
-import {DEFAULT_EMPTY, DEFAULT_ERROR} from "@/constans/states";
-import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import React from 'react';
+
+import {Button} from "@/components/ui/button";
+import {DEFAULT_EMPTY, DEFAULT_ERROR} from "@/constans/states";
 
 interface DataRenderProps<T> {
     success: boolean
@@ -14,7 +15,7 @@ interface DataRenderProps<T> {
     empty: {
         title: string
         message: string
-        button: {
+        button?: {
             text: string
             href: string
         }

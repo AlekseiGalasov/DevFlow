@@ -5,6 +5,7 @@ import React, {Suspense} from 'react';
 import {auth} from "@/auth";
 import AllAnswers from "@/components/answers/AllAnswers";
 import TagCard from "@/components/cards/TagCard";
+import Collection from "@/components/collection/Collection";
 import Preview from "@/components/editor/preview";
 import AnswerForm from "@/components/forms/AnswerForm";
 import Metric from "@/components/Metric";
@@ -13,6 +14,7 @@ import UserAvatar from "@/components/UserAvatar";
 import Votes from "@/components/votes/Votes";
 import ROUTES from "@/constans/routes";
 import {getAnswersByQuestionId} from "@/lib/actions/answer.action";
+import {HasInCollection} from "@/lib/actions/collection.action";
 import {GetQuestionById} from "@/lib/actions/question.action";
 import {hasVoted} from "@/lib/actions/vote.action";
 import {getKCounts, getTimeStamp} from "@/lib/utils";
@@ -36,6 +38,7 @@ const QuestionDetails = async ({params}: RouteParams) => {
     if (!questionSuccess || !question) return redirect("/404");
 
     const hasVotedPromise = hasVoted({actionId: question._id, type: 'question'})
+    const hasCollectionPromise = HasInCollection({questionId: question._id})
 
     const {success: answersSuccess, data: answers, error: answersError} = await getAnswersByQuestionId({
         questionId: id,
@@ -68,7 +71,7 @@ const QuestionDetails = async ({params}: RouteParams) => {
                             </Link>
                         </Button>}
                     </div>
-                    <div className='flex justify-end'>
+                    <div className='flex justify-end gap-4'>
                         <Suspense fallback={<div>Loading...</div>}>
                             <Votes
                                 upvotes={question.upvotes}
@@ -77,6 +80,9 @@ const QuestionDetails = async ({params}: RouteParams) => {
                                 type='question'
                                 actionId={question._id}
                             />
+                        </Suspense>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Collection questionId={question._id} hasCollectionPromise={hasCollectionPromise} />
                         </Suspense>
                     </div>
                 </div>
